@@ -86,6 +86,13 @@ dev.off()
 
 
 
+pdf("figure7B.pdf",height = 12,width = 18)
+
+FeaturePlot(object = YDL, reduction = "tsne",pt.size = 1.5,features = c("Hist1h1b","Hist1h2ae","Hist1h2bn","Hist1h3c","Hist1h4d","Fbxo5"),cols = c("gray", "red"),ncol = 3)#actin
+
+dev.off()
+
+
 
 library(monocle)
 cds<-readRDS("cds_SINGLET.rds")
@@ -331,33 +338,13 @@ DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5,split.by = "orig.ident
 dev.off()
 write.table(YDL$seurat_clusters,file="tsneCluster_baso.txt",quote=F,sep="\t",col.names=F)
 
+DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5,group.by = "orig.ident")
 
+DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5,group.by = "Phase")
 
-
-pdf("细胞周期打分.pdf")
-library(ggplot2)
-mydata<- FetchData(YDL,vars = c("tSNE_1","tSNE_2","G2M.Score"))
-a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = G2M.Score))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
-p1
-mydata<- FetchData(YDL,vars = c("tSNE_1","tSNE_2","S.Score"))
-a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = S.Score))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
-p1
-
-DimPlot(YDL,reduction = "tsne",label = TRUE,group.by="orig.ident",pt.size = 1.5)
-
-DimPlot(YDL,reduction = "tsne",label = TRUE,group.by="Phase",pt.size = 1.5)
-
-DimPlot(YDL,reduction = "tsne",label = TRUE,group.by="Phase",split.by = "orig.ident",pt.size = 1.5)
-
-DimPlot(YDL,reduction = "tsne",label = TRUE,group.by="Phase",split.by = "orig.ident",pt.size = 1.5)
+pdf("figure5G-1.pdf")
+DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5,split.by = "orig.ident",group.by = "Phase")
+dev.off()
 
 
 Idents(YDL)<-YDL@meta.data$Phase
@@ -365,60 +352,277 @@ Idents(YDL)<-YDL@meta.data$Phase
 DimPlot(YDL,reduction = "tsne",label = TRUE,split.by = "orig.ident",pt.size = 1.5)
 
 G2M<-subset(YDL,idents = c("G2M"))
+
+
+
+pdf("figure5G-2.pdf")
 DimPlot(G2M,reduction = "tsne",label = TRUE,cols = "#0CB702",split.by = "orig.ident",group.by="Phase",pt.size = 1.5)
+dev.off()
 
+
+YDL@meta.data$sample<-YDL@meta.data$orig.ident
 library(ggplot2)
-mydata<- FetchData(G2M,vars = c("tSNE_1","tSNE_2","G2M.Score"))
-a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = G2M.Score))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
+mydata<- FetchData(YDL,vars = c("tSNE_1","tSNE_2","G2M.Score","orig.ident")) %>% arrange(G2M.Score)
 
-p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
-p1
+a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = G2M.Score))+geom_point(size = 1)+
+  scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
 
-
-baso1<-subset(G2M, cells= rownames(G2M@meta.data[G2M@meta.data$orig.ident=="baso1",]))
-baso2<-subset(G2M, cells= rownames(G2M@meta.data[G2M@meta.data$orig.ident=="baso2",]))
-neutrophil<-subset(G2M, cells= rownames(G2M@meta.data[G2M@meta.data$orig.ident=="neutrophil",]))
-
-
-library(ggplot2)
-mydata<- FetchData(neutrophil,vars = c("tSNE_1","tSNE_2","G2M.Score"))
-a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = G2M.Score))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
-p1
-
-library(ggplot2)
-mydata<- FetchData(baso1,vars = c("tSNE_1","tSNE_2","G2M.Score"))
-a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = G2M.Score))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
-p1
-
-
-library(ggplot2)
-mydata<- FetchData(baso2,vars = c("tSNE_1","tSNE_2","G2M.Score"))
-a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = G2M.Score))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
-p1
-
-
-
-
+pdf("figure5G-3.pdf")
+a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))+
+  facet_wrap(~orig.ident) +
+  theme(
+    strip.background = element_rect(
+      color = "white", fill = "white"),
+    panel.grid = element_blank())
 dev.off()
 
 
 
 
 
+library(Hmisc)
+g2m_genes<-capitalize(tolower(cc.genes.updated.2019$g2m.genes))
+
+
+setwd("D:/analysis/forpublication/baso_merge_new")
+YDL<-readRDS("baso_merge_SINGLET.RDS")
+my_levels <- c(3,2,1,0,4,5)
+factor(Idents(YDL), levels= my_levels) 
+Idents(YDL) <- factor(Idents(YDL), levels= my_levels)
+DimPlot(YDL, reduction = "tsne", label = TRUE, pt.size = 1.5,cols = c("#F8766D","#B79F00","#00BA38","#00BFC4","#619CFF","#F564E3"))
+
+YDL.AVERAGE<-AverageExpression(object = YDL,return.seurat=F)
+YDL.AVERAGE<-as.data.frame(YDL.AVERAGE)
+
+
+
+write.csv(YDL.AVERAGE,file = "AVERAGE_baso.csv")
+data<-YDL.AVERAGE
+
+data<-data[which(rowSums(data) > 0),]#去掉全为零的行 情况
+
+merge_tf<-c(g2m_genes)
+#挑选部分感兴趣
+my.regulons <- merge_tf
+#删掉所有列上都重复的
+newdata<-data[c(my.regulons),]
+newdata<-na.omit(newdata)
+colnames(newdata)<-c("baso_cluster3","baso_cluster2","baso_cluster1","baso_cluster0","baso_cluster4","baso_cluster5")
+#低值为蓝色，高值为红色，中间值为白色：
+#pdf("fig1g.pdf")
+pheatmap(newdata,fontsize = 7,
+         cluster_rows = F,border_color = NA,cluster_cols = F,color = colorRampPalette(colors = c("white","red","darkred"))(100))
+
+pheatmap(newdata,scale = "row",fontsize = 7,
+         cluster_rows = F,border_color = NA,cluster_cols = F,color = colorRampPalette(colors = c("navyblue","white","red"))(100))
+pheatmap(newdata,scale = "row",fontsize = 7,
+         cluster_rows = F,border_color = NA,cluster_cols = F,color = colorRampPalette(colors = c("blue","white","red"))(100))
+
+pheatmap(newdata,fontsize = 7,
+         cluster_rows = T,border_color = NA,cluster_cols = T,color = colorRampPalette(colors = c("white","red","darkred"))(100))
+
+pheatmap(newdata,scale = "row",fontsize = 7,
+         cluster_rows = T,border_color = NA,cluster_cols = T,color = colorRampPalette(colors = c("navyblue","white","red"))(100))
+pheatmap(newdata,scale = "row",fontsize = 7,
+         cluster_rows = F,border_color = NA,cluster_cols = F,color = colorRampPalette(colors = c("blue","white","red"))(100))
+
+
+
+
+# 加载包
+library(Seurat)
+library(dplyr)
+library(ggplot2)
+library(pheatmap)
+library(RColorBrewer)
+pheatmap(newdata,scale = "row",fontsize = 7,
+         cluster_rows = F,border_color = NA,cluster_cols = F,color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdBu")))(100))
+pheatmap(newdata,scale = "row",fontsize = 7,
+         cluster_rows = T,border_color = NA,cluster_cols = T,color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdBu")))(100))
+
+pheatmap(newdata,scale = "row",fontsize = 7,clustering_method = "ward.D2",
+         cluster_rows = T,border_color = NA,cluster_cols = F,color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdBu")))(100))
+
+
+
+
+pheatmap(newdata,scale = "row",fontsize = 6,filename = "new2.pdf",width = 10,height = 100,
+         cluster_rows = F,border_color = NA,cluster_cols = F,color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdBu")))(100))
+dev.off()
+
+pheatmap(newdata,scale = "row",fontsize = 7,clustering_method = "ward.D2",
+         cluster_rows = T,border_color = NA,cluster_cols = F,color = colorRampPalette(rev(brewer.pal(n = 7, name = "RdBu")))(100))
+
+
+type1 <- c(
+  "Psrc1", "Hjurp", "Cbx5", "Ckap2l", "Kif11", "Ndc80", "Rangap1", "Smc4", 
+  "Bub1", "Birc5", "Mki67", "Hmgb2", "Anp32e", "Cdca3", "Aurkb", "Ttk", 
+  "Top2a", "Ncapd2", "Ctcf", "Tmpo", "Lbr"
+)
+
+type2 <- c(
+  "Ccnb2", "Dlgap5", "Tubb4b", "Nek2", "Jpt1", "Gas2l3", "Ect2", "Cenpa", 
+  "G2e3", "Ube2c", "Cenpf", "Cks1b", "Cenpe", "Cdc20", "Nusap1", "Kif2c", 
+  "Cdk1", "Gtse1", "Cdca2", "Kif23", "Anln", "Tpx2", "Cks2", "Cdca8", 
+  "Ckap5", "Nuf2", "Tacc3", "Cdc25c", "Kif20b", "Ckap2", "Hmmr", "Aurka"
+)
+
+eg = bitr(type1, fromType="SYMBOL", toType="ENTREZID", OrgDb ="org.Mm.eg.db")
+type1 <- eg[,2]
+type1<-as.data.frame(type1)
+colnames(type1)<-c("type1")
+head(type1)
+type1<-c(type1)
+
+
+eg = bitr(type2, fromType="SYMBOL", toType="ENTREZID", OrgDb ="org.Mm.eg.db")
+type2 <- eg[,2]
+type2<-as.data.frame(type2)
+colnames(type2)<-c("type2")
+head(type2)
+type2<-c(type2)
+
+
+data<-list(type1 =type1$type1,type2=type2$type2)
+
+lapply(data, head)
+
+
+head(as.data.frame(ck))
+
+ck <- compareCluster(geneCluster = data,OrgDb = org.Mm.eg.db, fun = "enrichGO", pvalueCutoff=0.05)
+write.csv(ck,"go.csv")
+
+
+dim(ck)
+pdf("figure5K.pdf",height = 7,width=8)
+dotplot(ck, showCategory =50)
+dev.off()
+ego2 <- simplify(ck,cutoff=0.7,by="p.adjust",select_fun=min)  #去除冗余，可以调整cutoff值
+dim(ego2)
+dotplot(ck, showCategory =50)
+dotplot(ego2, showCategory =50)
+dotplot(ego2, showCategory =15)
+
+ck_enrichKEGG <- compareCluster(geneCluster = data, fun = "enrichKEGG",organism="mmu")
+dotplot(ck_enrichKEGG, showCategory =15)
+write.csv(ck_enrichKEGG,"enrichKEGG.csv")
+
+#visualize the result using dotplot method.
+
+pdf("多样本富集分析-1.pdf",width=10,height=12)
+dotplot(ck, showCategory =50)
+dotplot(ck, showCategory =30,split="ONTOLOGY") 
+dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(clusterProfiler)
+library("org.Mm.eg.db")
+library(ggplot2)
+#合并四个时期的BP，以热图展示
+a <- read.csv("allmarker_baso_321045.csv")
+b<-a[a$cluster=="0","gene"]
+eg = bitr(b, fromType="SYMBOL", toType="ENTREZID", OrgDb ="org.Mm.eg.db")
+gene_cluster0 <- eg[,2]
+gene_cluster0<-as.data.frame(gene_cluster0)
+colnames(gene_cluster0)<-c("cluster0")
+head(gene_cluster0)
+gene_cluster0<-c(gene_cluster0)
+
+
+a <- read.csv("allmarker_baso_321045.csv")
+b<-a[a$cluster=="1","gene"]
+eg = bitr(b, fromType="SYMBOL", toType="ENTREZID", OrgDb ="org.Mm.eg.db")
+gene_cluster1 <- eg[,2]
+gene_cluster1<-as.data.frame(gene_cluster1)
+colnames(gene_cluster1)<-c("cluster1")
+head(gene_cluster1)
+gene_cluster1<-c(gene_cluster1)
+
+a <- read.csv("allmarker_baso_321045.csv")
+b<-a[a$cluster=="2","gene"]
+eg = bitr(b, fromType="SYMBOL", toType="ENTREZID", OrgDb ="org.Mm.eg.db")
+gene_cluster2 <- eg[,2]
+gene_cluster2<-as.data.frame(gene_cluster2)
+colnames(gene_cluster2)<-c("cluster2")
+head(gene_cluster2)
+gene_cluster2<-c(gene_cluster2)
+
+a <- read.csv("allmarker_baso_321045.csv")
+b<-a[a$cluster=="3","gene"]
+eg = bitr(b, fromType="SYMBOL", toType="ENTREZID", OrgDb ="org.Mm.eg.db")
+gene_cluster3 <- eg[,2]
+gene_cluster3<-as.data.frame(gene_cluster3)
+colnames(gene_cluster3)<-c("cluster3")
+head(gene_cluster3)
+class(gene_cluster3)
+gene_cluster3<-c(gene_cluster3)
+
+a <- read.csv("allmarker_baso_321045.csv")
+b<-a[a$cluster=="4","gene"]
+eg = bitr(b, fromType="SYMBOL", toType="ENTREZID", OrgDb ="org.Mm.eg.db")
+gene_cluster4 <- eg[,2]
+gene_cluster4<-as.data.frame(gene_cluster4)
+colnames(gene_cluster4)<-c("cluster4")
+head(gene_cluster4)
+class(gene_cluster4)
+gene_cluster4<-c(gene_cluster4)
+
+a <- read.csv("allmarker_baso_321045.csv")
+b<-a[a$cluster=="5","gene"]
+eg = bitr(b, fromType="SYMBOL", toType="ENTREZID", OrgDb ="org.Mm.eg.db")
+gene_cluster5 <- eg[,2]
+gene_cluster5<-as.data.frame(gene_cluster5)
+colnames(gene_cluster5)<-c("cluster5")
+head(gene_cluster5)
+class(gene_cluster5)
+gene_cluster5<-c(gene_cluster5)
+
+
+#data<-structure(list(cluster3 =gene_cluster3,cluster2 =gene_cluster2,cluster1 =gene_cluster1,cluster0 =gene_cluster0, cluster4=gene_cluster4,  cluster5=gene_cluster5))
+data<-list(cluster3 =gene_cluster3$cluster3,cluster2 =gene_cluster2$cluster2,cluster1 =gene_cluster1$cluster1,cluster0 =gene_cluster0$cluster0, cluster4=gene_cluster4$cluster4,  cluster5=gene_cluster5$cluster5)
+
+lapply(data, head)
+
+
+head(as.data.frame(ck))
+
+ck <- compareCluster(geneCluster = data,OrgDb = org.Mm.eg.db, fun = "enrichGO", pvalueCutoff=0.05)
+write.csv(ck,"go.csv")
+
+
+dim(ck)
+dotplot(ck, showCategory =50)
+ego2 <- simplify(ck,cutoff=0.7,by="p.adjust",select_fun=min)  #去除冗余，可以调整cutoff值
+dim(ego2)
+dotplot(ck, showCategory =50)
+dotplot(ego2, showCategory =50)
+dotplot(ego2, showCategory =15)
+
+ck_enrichKEGG <- compareCluster(geneCluster = data, fun = "enrichKEGG",organism="mmu")
+dotplot(ck_enrichKEGG, showCategory =15)
+write.csv(ck_enrichKEGG,"enrichKEGG.csv")
+
+#visualize the result using dotplot method.
+
+pdf("多样本富集分析-1.pdf",width=10,height=12)
+dotplot(ck, showCategory =50)
+dotplot(ck, showCategory =30,split="ONTOLOGY") 
+dev.off()
 
 
 
