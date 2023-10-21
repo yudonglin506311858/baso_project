@@ -93,6 +93,96 @@ FeaturePlot(object = YDL, reduction = "tsne",pt.size = 1.5,features = c("Hist1h1
 dev.off()
 
 
+pdf("Figure_S12_D.pdf")
+#绘制UMI的分布图
+library(ggplot2)
+mydata<- FetchData(YDL,vars = c("tSNE_1","tSNE_2","nCount_RNA"))
+a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = log(nCount_RNA)))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
+
+p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
+p1
+# p2
+# plot_grid(p1,p2)
+# library(ggplot2)
+# mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","nCount_RNA"))
+# a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = log(nCount_RNA)))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
+# 
+# a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+#                       panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+# 
+# DimPlot(YDL,reduction = "umap",label = TRUE,pt.size = 1.5,split.by = "orig.ident")
+# DimPlot(YDL,reduction = "umap",label = TRUE,pt.size = 1.5)
+# 
+# DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
+# 
+# 
+# #绘制基因的分布图
+library(ggplot2)
+mydata<- FetchData(YDL,vars = c("tSNE_1","tSNE_2","nFeature_RNA"))
+a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = log(nFeature_RNA)))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
+
+p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
+# p1
+# p2
+# plot_grid(p1,p2)
+# library(ggplot2)
+# mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","nFeature_RNA"))
+# a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = log(nFeature_RNA)))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
+# 
+# a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+#                       panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+# 
+# DimPlot(YDL,reduction = "umap",label = TRUE,pt.size = 1.5,split.by = "orig.ident")
+# DimPlot(YDL,reduction = "umap",label = TRUE,pt.size = 1.5)
+# 
+# DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
+# 
+# 
+
+#绘制线粒体的分布图
+library(ggplot2)
+mydata<- FetchData(YDL,vars = c("tSNE_1","tSNE_2","percent.mt"))
+a <- ggplot(mydata,aes(x = tSNE_1,y =tSNE_2,colour = percent.mt))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
+
+p1<-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                          panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+p2<-DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
+# p1
+# p2
+# plot_grid(p1,p2)
+# library(ggplot2)
+# mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","percent.mt"))
+# a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = percent.mt))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
+# 
+# a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+#                       panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
+# 
+# DimPlot(YDL,reduction = "umap",label = TRUE,pt.size = 1.5,split.by = "orig.ident")
+# DimPlot(YDL,reduction = "umap",label = TRUE,pt.size = 1.5)
+# 
+# DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5)
+# 
+dev.off()
+# 
+# Metric      Min    1st Q  Median   Mean   3rd Q    Max
+# nCount_RNA  1062   17315   19965   20352  23271   39922
+# nFeature_RNA 201   1555    1864    1797   2154    3981
+# percent.mt   0.03366  0.39237 0.57952 0.84801 0.93758 14.74087
+# 
+# 0	1237
+# 1	1138
+# 2	1005
+# 3	713
+# 4	464
+# 5	348
+pdf("Figure_S12_F.pdf")
+DimPlot(YDL,reduction = "tsne",label = TRUE,pt.size = 1.5,split.by = "orig.ident")
+dev.off()
+
 
 library(monocle)
 cds<-readRDS("cds_SINGLET.rds")
@@ -121,6 +211,7 @@ dev.off()
 
 
 
+Idents(YDL)<-YDL$seurat_clusters
 YDL.markers <- FindAllMarkers(YDL, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25, test.use = 'roc')
 #YDL.markers <- FindAllMarkers(YDL, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25, test.use = 't')
 # install.packages("magrittr") # package installations are only needed the first time you use it
@@ -157,8 +248,9 @@ DoHeatmap(object = YDL, features = top10$gene,group.colors = c("#F8766D","#B79F0
 DoHeatmap(object = YDL, features = YDL.markers$gene,group.colors = c("#F8766D","#B79F00","#00BA38","#00BFC4","#619CFF","#F564E3")) + NoLegend()
 DoHeatmap(object = subset(YDL, downsample = 100), features = YDL.markers$gene,group.colors = c("#F8766D","#B79F00","#00BA38","#00BFC4","#619CFF","#F564E3")) + NoLegend()
 
-
-
+pdf("Table. S2. Marker genes of each cluster of Baso-E cells.pdf")
+DoHeatmap(object = YDL, features = YDL.markers$gene,group.colors = c("#F8766D","#B79F00","#00BA38","#00BFC4","#619CFF","#F564E3")) + NoLegend()
+dev.off()
 
 pdf("figure5D.pdf")
 DoHeatmap(object = subset(YDL, downsample = 100), features = top10$gene,group.colors = c("#F8766D","#B79F00","#00BA38","#00BFC4","#619CFF","#F564E3")) + NoLegend()
@@ -377,6 +469,179 @@ a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element
     panel.grid = element_blank())
 dev.off()
 
+
+
+
+
+
+
+pro<-subset(YDL, cells= rownames(YDL@meta.data[YDL@meta.data$orig.ident=="pro",]))
+
+baso<-subset(YDL, cells= rownames(YDL@meta.data[YDL@meta.data$orig.ident=="baso",]))
+
+neutrophil<-subset(YDL, cells= rownames(YDL@meta.data[YDL@meta.data$orig.ident=="neutrophil",]))
+
+
+table(YDL@meta.data$Phase)
+table(pro@meta.data$Phase)
+table(baso@meta.data$Phase)
+table(neutrophil@meta.data$Phase)
+
+pdf("Figure_S14.pdf")
+
+a<-as.data.frame(table(YDL@meta.data$Phase))
+# 数据准备
+info = a$Freq
+# 命名
+names = c("G1","G2M","S")
+# 涂色（可选）
+cols = c("#F8766D","#0CB702","#00A9FF")
+# 计算百分比
+piepercent = paste(round(100*info/sum(info),2), "%")
+# 绘图
+pie(info, labels=piepercent, main = "all cell cycle ratio", col=cols, family='GB1')
+# 添加颜色样本标注
+legend("topright", names, cex=0.8, fill=cols)
+
+
+
+a<-as.data.frame(table(pro@meta.data$Phase))
+# 数据准备
+info = a$Freq
+# 命名
+names = c("G1","G2M","S")
+# 涂色（可选）
+cols = c("#F8766D","#0CB702","#00A9FF")
+# 计算百分比
+piepercent = paste(round(100*info/sum(info),2), "%")
+# 绘图
+pie(info, labels=piepercent, main = "pro cell cycle ratio", col=cols, family='GB1')
+# 添加颜色样本标注
+legend("topright", names, cex=0.8, fill=cols)
+
+
+
+
+a<-as.data.frame(table(baso@meta.data$Phase))
+# 数据准备
+info = a$Freq
+# 命名
+names = c("G1","G2M","S")
+# 涂色（可选）
+cols = c("#F8766D","#0CB702","#00A9FF")
+# 计算百分比
+piepercent = paste(round(100*info/sum(info),2), "%")
+# 绘图
+pie(info, labels=piepercent, main = "baso cell cycle ratio", col=cols, family='GB1')
+# 添加颜色样本标注
+legend("topright", names, cex=0.8, fill=cols)
+
+
+
+
+a<-as.data.frame(table(neutrophil@meta.data$Phase))
+# 数据准备
+info = a$Freq
+# 命名
+names = c("G1","G2M","S")
+# 涂色（可选）
+cols = c("#F8766D","#0CB702","#00A9FF")
+# 计算百分比
+piepercent = paste(round(100*info/sum(info),2), "%")
+# 绘图
+pie(info, labels=piepercent, main = "neutrophil cell cycle ratio", col=cols, family='GB1')
+# 添加颜色样本标注
+legend("topright", names, cex=0.8, fill=cols)
+
+
+
+
+
+dev.off()
+
+
+
+
+
+Idents(YDL)<-YDL@meta.data$Phase
+DimPlot(YDL,reduction = "tsne",label = TRUE,split.by = "orig.ident",pt.size = 1.5)
+YDL<-subset(YDL,idents = c("G2M"))
+
+
+pro<-subset(YDL, cells= rownames(YDL@meta.data[YDL@meta.data$orig.ident=="pro",]))
+
+baso<-subset(YDL, cells= rownames(YDL@meta.data[YDL@meta.data$orig.ident=="baso",]))
+
+neutrophil<-subset(YDL, cells= rownames(YDL@meta.data[YDL@meta.data$orig.ident=="neutrophil",]))
+
+write.csv(pro@meta.data,"pro_score.csv")
+write.csv(baso@meta.data,"baso_score.csv")
+write.csv(neutrophil@meta.data,"neutrophil_score.csv")
+
+data<-as.data.frame(YDL@meta.data$G2M.Score)
+colnames(data)<-"G2M.score"
+library(ggplot2)
+#注释：package使用之前需要调用
+
+p<-ggplot(data, aes(G2M.score)) +
+  geom_histogram(breaks=seq(-0.7,1.5,0.1))+ xlim(-0.7,1.5)
+p+
+  ggtitle("all") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16))
+
+
+data<-as.data.frame(pro@meta.data$G2M.Score)
+colnames(data)<-"G2M.score"
+library(ggplot2)
+#注释：package使用之前需要调用
+
+p2<-ggplot(data, aes(G2M.score)) +
+  geom_histogram(breaks=seq(-0.7,1.5,0.1))+ xlim(-0.7,1.5)+
+  ggtitle("pro") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16))
+p2
+
+
+data<-as.data.frame(baso@meta.data$G2M.Score)
+colnames(data)<-"G2M.score"
+library(ggplot2)
+#注释：package使用之前需要调用
+
+p1<-ggplot(data, aes(G2M.score)) +
+  geom_histogram(breaks=seq(-0.7,1.5,0.1))+ xlim(-0.7,1.5)+
+  ggtitle("baso") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16))
+p1
+
+
+data<-as.data.frame(neutrophil@meta.data$G2M.Score)
+colnames(data)<-"G2M.score"
+library(ggplot2)
+#注释：package使用之前需要调用
+
+p3<-ggplot(data, aes(G2M.score)) +
+  geom_histogram(breaks=seq(-0.7,1.5,0.1))+ xlim(-0.7,1.5)+
+  ggtitle("neutrophil") +
+  theme(plot.title = element_text(hjust = 0.5, size = 16))
+p3
+
+pdf("Figure_S14C.pdf",height=6,width=18)
+p1+p2+p3
+dev.off()
+saveRDS(YDL,"PRO_BASO_NEUTROPHIL.RDS")
+
+
+
+library(Hmisc)
+g2m_genes<-capitalize(tolower(cc.genes.updated.2019$g2m.genes))
+
+DimPlot(YDL,reduction = "tsne",label = TRUE,group.by="Phase",pt.size = 1.5)
+
+Idents(YDL) <- YDL$orig.ident
+YDL$orig.ident<-factor(YDL$orig.ident,levels = c("baso","neutrophil","pro"))
+pdf("Figure_S14D.pdf")
+DoHeatmap(object = YDL, features = g2m_genes) + NoLegend()
+dev.off()
 
 
 
@@ -607,6 +872,9 @@ write.csv(ck,"go.csv")
 
 dim(ck)
 dotplot(ck, showCategory =50)
+pdf("Figure_S13.pdf",height = 12,width=11)
+dotplot(ck, showCategory =10)
+dev.off()
 ego2 <- simplify(ck,cutoff=0.7,by="p.adjust",select_fun=min)  #去除冗余，可以调整cutoff值
 dim(ego2)
 dotplot(ck, showCategory =50)
@@ -816,67 +1084,69 @@ dev.off()
 
 
 
+YDL<-readRDS("D:/analysis/forpublication/human_bm_ubc/human_bm_all.RDS")
 
-YDL<-readRDS("D:/analysis/forpublication/bulk_sc/terminalE.rds")
-#徐湘民的骨髓单细胞数据
-#YDL<-readRDS("D:/analysis/forpublication/summary/nonpro1_own_nonpro2/terminalE.rds")
-#saveRDS(YDL,"terminalE.rds")
-Idents(YDL)<-YDL$orig.ident
-YDL<-subset(YDL,idents = c("pro","baso","poly","ortho"))
 
+library("Seurat")
+library("ggplot2")
+gg <- TSNEPlot(YDL)
+col<-ggplot_build(gg)$data
+col<-as.data.frame(col)
+table(col$colour)
+table(YDL$seurat_clusters)
+
+a<-as.data.frame(table(col$colour))
+b<-as.data.frame(table(YDL$seurat_clusters))
+c<-merge(a,b,by = "Freq")
+c<-c[order(c$Freq,decreasing = T),]
+
+current.cluster.ids <- c(0, 1, 2, 3, 4, 5,6,7,8)
+new.cluster.ids <- c(
+  "Late-Ortho","Early-Ortho",
+  "Pro/Baso","Early-Poly",
+  "T-like","Late-Poly",
+  "NK/T-like",
+  "Mono/N-like","B-like")
+names(new.cluster.ids) <- levels(YDL)
+YDL <- RenameIdents(YDL, new.cluster.ids)
+DimPlot(YDL, reduction = "tsne", label = TRUE, pt.size = 1.5)
+DimPlot(YDL, reduction = "umap", label = TRUE, pt.size = 1.5)
+
+YDL$celltype<-Idents(YDL)
+YDL$celltype<-factor(YDL$celltype,levels = c("Pro/Baso","Early-Poly","Late-Poly","Early-Ortho","Late-Ortho","T-like",
+                                             "NK/T-like",
+                                             "Mono/N-like","B-like"))
 Idents(YDL)<-YDL$celltype
-YDL<-subset(YDL,idents = c("E0","E1","E2","E3","E4"))
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE)
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE,group.by = 'orig.ident')
 
 
-cols = c("#F8766D","#B79F00","#00BA38","#00BFC4","#619CFF","#F564E3")
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE,cols = cols)
 
-pdf("去除reti.pdf")
-p1<-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE)
-p1
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE,cols = cols)
-dev.off()
+YDL<-subset(YDL,idents = c("Pro/Baso","Early-Poly","Late-Poly","Early-Ortho","Late-Ortho"))
 
-pdf("figure4c-1.pdf")
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE,cols = cols)
-Idents(YDL)<-YDL$orig.ident
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE,cols = cols,group.by = 'orig.ident')
-dev.off()
-pdf("figure4c-2.pdf",height = 6,width = 24)
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE,cols = cols,split.by = 'orig.ident')
-dev.off()
+pdf("Figure_S15-1.pdf")
+DimPlot(YDL, reduction = "umap", label = TRUE, pt.size = 1.5)
 
+library(ggplot2)
+mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","G2M.Score"))
+a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = G2M.Score))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
 
-pdf("figur6-IJK.pdf")
-Idents(YDL)<-YDL$orig.ident
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE,cols = cols,group.by = 'orig.ident')
-Idents(YDL)<-YDL$celltype
-DimPlot(YDL, reduction = "umap", pt.size = 1.5, label=TRUE,cols = cols)
-FeaturePlot(object = YDL, reduction = "umap",pt.size = 1.5,features = c("Atm"),cols = c("gray", "red"))#actin
-FeaturePlot(object = YDL, reduction = "umap",pt.size = 1.5,features = c("Atr"),cols = c("gray", "red"))#actin
-FeaturePlot(object = YDL, reduction = "umap",pt.size = 1.5,features = c("Foxm1"),cols = c("gray", "red"))#actin
-dev.off()
+a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+                      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
 
-
-# 
-# library("Seurat")
-# library("ggplot2")
-# gg <- TSNEPlot(YDL)
-# col<-ggplot_build(gg)$data
-# col<-as.data.frame(col)
-# table(col$colour)
-# table(YDL$celltype)
-# > table(col$colour)
-# 
-# #00BA38 #00BFC4 #619CFF #B79F00 #F564E3 #F8766D 
-# 2138    2050    3189    1037     696    2564 
-# > table(YDL$celltype)
-# 
-# E0   E1   E2   E3   E4   E5 
-# 2564 1037 2138 2050 3189  696 
-
+a<-as.data.frame(table(YDL@meta.data$celltype))
+a<-a[1:5,]
+# 数据准备
+info = a$Freq
+# 命名
+names = as.character(a$Var1)
+#names = c("0","1","2","3","4","5","6","7")
+# 涂色（可选）
+#cols = c("#ED1C24","#22B14C","#FFC90E","#3f48CC","#3f90CC","#22B17C","#FFC93E")
+# 计算百分比
+piepercent = paste(round(100*info/sum(info),2), "%")
+# 绘图
+pie(info, labels=piepercent, main = "total cluster ratio", col=colors, family='GB1')
+# 添加颜色样本标注
+legend("topright", names, cex=0.6, fill=colors)
 
 
 library(ggplot2)
@@ -885,8 +1155,6 @@ a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = log(nCount_RNA)))+geom_poin
 
 a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
                       panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-
-
 library(ggplot2)
 mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","nFeature_RNA"))
 a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = log(nFeature_RNA)))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
@@ -894,56 +1162,12 @@ a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = log(nFeature_RNA)))+geom_po
 a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
                       panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
 
-
-library(ggplot2)
-mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","nCount_RNA"))
-a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = nCount_RNA))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-
-
-library(ggplot2)
-mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","nFeature_RNA"))
-a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = nFeature_RNA))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-
-
-
-
-pdf("Figure_S3_D_E.pdf")
-
-
-library(ggplot2)
-mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","nFeature_RNA"))
-head(mydata)
-colnames(mydata)<-c("UMAP_1","UMAP_2","gene_number")
-a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = gene_number))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-library(ggplot2)
-mydata<- FetchData(YDL,vars = c("UMAP_1","UMAP_2","nCount_RNA"))
-head(mydata)
-colnames(mydata)<-c("UMAP_1","UMAP_2","mRNA_number")
-a <- ggplot(mydata,aes(x = UMAP_1,y =UMAP_2,colour = mRNA_number))+geom_point(size = 1)+scale_color_gradientn(values = seq(0,1,0.2),colours = c('blue','cyan','green','yellow','orange','red'))
-
-a+ theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-                      panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"))
-
 dev.off()
 
-
-
-
-
-
-
-
-
-
+pdf("Figure_S15-2.pdf")
+FeaturePlot(object = YDL, reduction = "umap",pt.size = 1.5,features = c("HIST1H4E","HIST1H3B","HIST1H2BH","HIST1H1B","HIST1H2AJ","FBXO5","UBE2C","CDC20","CKS1B"),cols = c("gray", "red"))#actin
+#DimPlot(YDL, reduction = "umap", label = TRUE, pt.size = 1.5)
+dev.off()
 
 
 
